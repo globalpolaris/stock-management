@@ -9,6 +9,6 @@ router
 
 router.get('/api/products/:id', productsController.getAllProducts);
 router.put('/api/products/:id', productsController.updateProductController);
-router.delete('/api/products/:id', productsController.deleteProduct);
+router.delete('/api/products/', productsController.deleteProductController);
 
 module.exports = router;

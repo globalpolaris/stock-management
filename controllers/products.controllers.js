@@ -1,4 +1,9 @@
-const { insert, getProducts, updateProduct } = require('../init/insert');
+const {
+  insert,
+  getProducts,
+  updateProduct,
+  deleteProduct,
+} = require('../init/query');
 
 const getAllProducts = async (req, res) => {
   const id = req.params.id;
@@ -24,7 +29,6 @@ const getProductById = (req, res) => {
 };
 
 const updateProductController = async (req, res) => {
-  let status;
   const id = req.params.id;
   const product = {
     id: id,
@@ -43,8 +47,15 @@ const updateProductController = async (req, res) => {
   return res.status(200).send(`Updated product id: ${req.params.id}`);
 };
 
-const deleteProduct = (req, res) => {
-  return res.status(200).send(`Delete product id: ${req.params.id}`);
+const deleteProductController = async (req, res) => {
+  let ids = req.query.id.split(',');
+  const int_ids = ids.map((id) => parseInt(id));
+  try {
+    let response = await deleteProduct(int_ids);
+  } catch (error) {
+    return res.status(error).send(`Error code: ${error}`);
+  }
+  return res.status(200).send(`Delete product id: ${req.query.id}`);
 };
 
 module.exports = {
@@ -52,5 +63,5 @@ module.exports = {
   postProduct,
   getProductById,
   updateProductController,
-  deleteProduct,
+  deleteProductController,
 };

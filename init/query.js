@@ -50,6 +50,26 @@ const updateProduct = (product) => {
   });
 };
 
+const deleteProduct = (id) => {
+  console.log(id);
+  return new Promise((resolve, reject) => {
+    db.serialize(() => {
+      let prodIds = id.join(',');
+      let sql = `DELETE FROM products WHERE id in(${prodIds})`;
+      console.log(sql);
+      db.run(sql, [], (err) => {
+        if (!err) {
+          console.log(`Deleted products with id: ${prodIds}`);
+          resolve(200);
+        } else {
+          console.error(err);
+          reject(500);
+        }
+      });
+    });
+  });
+};
+
 // db.serialize(() => {
 //   let sql = `SELECT id, name, price from products`;
 //   // let id = 1;
@@ -61,4 +81,4 @@ const updateProduct = (product) => {
 //   });
 // });
 
-module.exports = { insert, getProducts, updateProduct };
+module.exports = { insert, getProducts, updateProduct, deleteProduct };
